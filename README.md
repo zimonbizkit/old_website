@@ -2,8 +2,6 @@
 This is just a Jekyll template that I use to render my personal website. I'm too dumb to have not forked the original repo and modifying it on my own, so the content of the original README.md file goes below:
 
 
-
-
 # Jekyll template
 Beautiful responsive portfolio style template for designers and web developers
 
