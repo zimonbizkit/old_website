@@ -1,0 +1,12 @@
+-   id: 1
+    title: About me    
+    img: about.jpg
+    class: block-about
+    width: 7
+    height: 3
+-   id: 2
+    title: Some other project I did 
+    img: 2.jpg
+    width: 4
+    height: 2
+-   id: 3
