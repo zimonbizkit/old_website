@@ -19,15 +19,22 @@ So by the time I had something simple ready, I ran the jekyll `serve` command so
 
 {% endhighlight %} 
 
-Jekyll also offers powerful support for code snippets:
+After that I assumed that I was screwed and that I was going to last days to know what's been broken on my system. Before giving up I did a quick research of the output of that command, and seemed pretty common. I installed jekyll from the aptitude package manager, and as it's also a gem on ruby, out of my desperation I tried to install ruby via its package manager:gem. So after executing `gem install jekyll`, the output was the following:
 
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
+{% highlight bash %}
+
+{% end highlight %}
+
+So eventually seemed that my ruby version on my box was old enough to fail when trying to serve a static website. Since ruby was included by default in the box, and many services were dependant on ruby, I could not take the risk of just erasing ruby and installing the new version. I though to have a virtual environment to work in my blog, and I also discovered later that [this is a plausible soliution][vagrantjekyllbox] as in Vagrant Hub there's a virtual machine for that.
+
+But before thinking that, I searched for a way that the fellow ruby developers could manage their environment easily, as for sur ther could have dealt with a problem similar as mine. And there, I found [RVM][rubyversionmanager]. That, is just the acronym of "Ruby Version Manager", and it just does that very well. After following the steps they indicate on their website, I was able to see what was my ruby environment status (even when I tried to mess with ruby manually):
+
+
+After executing `rvm list known` I was able to see which ruby version I needed to install. Again, installing a ruby version was really easy by executing `rvm install <ruby_version>`. After that, by executing `ruby list` a list of available and used versions was displayed. To switch the version of ruby to the one I needed was as simple as `rvm use <ruby_version>`. 
+
+Of course, after that, `jekyll serve` was executed properly and I was able to check out the site that you are browsing now.
+
+ 
 
 Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
 
