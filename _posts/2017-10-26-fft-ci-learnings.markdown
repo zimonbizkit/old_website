@@ -31,15 +31,15 @@ Following the Continuous Integration discussion,it eventually seemed for the maj
 	<li> A coverage test suite was being conducted, but it wasn't really taken into account.</li> 
 </ul>
 <br>
-There are quite a bunch of things to fix, but the <b>tests</b> seemed to be the common point. Therefore, I asked an experienced developer what tests had to do with our integration, as for me the way to integrate was correct. His answer was quite simple: <b>there were too many tests</b>.That collided with my previous assumption of having as much tests as possible. He, then, introduced me a new concept on software testing, and integration: the <b>Test Pyramid</b>.
+There are quite a bunch of things to fix, but the <b>tests</b> seemed to be the common point. Therefore, I asked an experienced developer what tests had to do with our integration, as for me the way to integrate was correct. His answer was quite simple: <b>there were too many tests</b>.That collided with my previous assumption of having as much tests as possible. He, then, introduced me a new concept on software testing: the <b>Test Pyramid</b>.
 <div class='tp-image'>
 	<img src='../../../../assets/posts/testpyramid.png'>
 </div>
 
-A [concept][testpyr] very well explained in [Martin Fowlers blog][mf-blog], which in short states that in an Agile environment, one should adhere to the following principles:<br>
+A [concept][testpyr] very well explained in [Martin Fowlers blog][mf-blog], which in short states that in an Agile environment, a complex test suite should adhere to the following:<br>
 <ul>
 	<li>
-		Unit tests are <b>fast</b> (if they don't depend on database) and are <b>cost efficient</b>. So they can proliferate in our testing suite and have as much we want for them. This involve testing <i>happy paths</i> and <i>corner cases</i> for our software unit. That also means that we need to test an unique behaviour once, and control that. 
+		Unit tests are <b>fast</b> (if they don't depend on database) and are <b>cost efficient</b>. So they can proliferate in our testing suite and have as much we want for them. This involve testing <i>happy paths</i> and <i>corner cases</i> for our software unit. That also means that we need to test an unique software unit  once, and only once. 
 	</li>
 	<li>
 	Integration tests are rather fast. We can have a set of them, but they just need to test integrations and communications on our components. Thence, sometimes integration tests are also called component tests. It's better to not abuse them.
@@ -49,11 +49,11 @@ A [concept][testpyr] very well explained in [Martin Fowlers blog][mf-blog], whic
 	</li>    
 </ul>
 Martin Fowler's main entryline explaining this concept sums up quite well what's to gain:<br>
-<blockquote>The test pyramid is a way of thinking about different kinds of automated tests should be used to create a balanced portfolio. Its essential point is that you should have many more low-level UnitTests than high level BroadStackTests running through a GUI.</blockquote>
+<blockquote>The test pyramid is a way of thinking about different kinds of automated tests should be used to create a balanced portfolio. Its essential point is that you should have many more low-level UnitTests than high level "Broad Stack Tests" running through a GUI.</blockquote>
 
 
 
-So then, the discussion around what was our test strategy was eventually understood: Our integration was slow, buggy and sometimes unreliable as we were trapped in the following pitfalls:
+So then, the discussion around what was our test strategy was eventually understood. Our integration was slow, buggy and sometimes unreliable as we were trapped in the following pitfalls:
 <ul>
 	<li>We had too much integration and e2e tests, and sometimes testing the same feature over and over again. As they are slow and not cost efficient, we waited too much for them to be completed.</li>
 	<li>
@@ -66,8 +66,8 @@ With that being said, and after some discussion, the Test Pyramid concept made s
 The new approach for testing, that should improve a significant amount of our integration strategy, will involve:
 <ul>
 	<li>Split integration tests in various suites. Try to choose which suite applies to be executed for which feature. If we succeed at this, we can try to execute suites in <i>parallel</i> to gain time. I'd like to write some findings regarding this specific topic. </li>
-	<li>Identify test doubles and useless tests of any kind, and remove them.</li>
-	<li>Make the tests relying on database to be stateless. </li>
+	<li>Identify useless tests of any kind, and remove them.</li>
+	<li>Make the tests relying on database to be stateless, or just remove them. </li>
 	<li>Discuss whether if it's necessary to execute all the test suite <i>for each</i> feature or fix done to our software.</li>
 </ul>
 

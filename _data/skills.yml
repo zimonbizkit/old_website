@@ -1,28 +1,28 @@
 -   id: javascript
     descr: javascript    
-    xp: 6
--   id: css
-    descr: css
+    xp: 3
+-   id: php
+    descr: php
     color: teal
     xp: 7
--   id: c#
-    descr: c#    
-    xp: 3
+-   id: ddd
+    descr: Domain Driven Design    
+    xp: 4
 -   id: angular
     descr: angularjs    
-    xp: 8
--   id: java
-    descr: java    
-    xp: 5
--   id: sass
-    descr: sass    
-    xp: 4
--   id: jquery
-    descr: jquery    
-    xp: 3
+    xp: 1
+-   id: 
+    descr: .NET    
+    xp: 2
+-   id: python
+    descr: python    
+    xp: 2
+-   id: go
+    descr: go    
+    xp: 1
 -   id: node.js
     descr: node.js 
     xp: 2
--   id: php
-    descr: php
+-   id: es
+    descr: Event Sourcing
     xp: 4

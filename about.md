@@ -8,7 +8,7 @@ permalink: /about/
 <p class='about para'>
  I'm a software developer based in Barcelona ,Spain. I've been working as a developer/systems engineer for a big variety of companies, and I'm currently employed as a developer on one of the biggest fintech companies in the United Kingdom, with business units in a bunch of countries.
 <br>
- My period of scholarship should be the equivalent of the so called <i>bachelors degree</i> on Information Technology in the UOC, which I didn't finish, but intend to do some day. Anyhow, you can contact <a href='mailto:simon.gallegos.edu@gmail.com'>me</a> if you want a copy of my resumé.
+ My period of scholarship should be the equivalent of the so called <i>bachelors degree</i> on Information Technology, which I didn't finish, but intend to do some day. Anyhow, you can contact <a href='mailto:simon.gallegos.edu@gmail.com'>me</a> if you want a copy of my resumé.
 </p>
 
 ##  What I do 
