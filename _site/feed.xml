@@ -4,10 +4,10 @@
     <title>Edu Simon</title>
     <description>Eduard Simón | simon.gallegos.edu@gmail.com
 </description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 05 Jan 2018 17:28:44 +0100</pubDate>
-    <lastBuildDate>Fri, 05 Jan 2018 17:28:44 +0100</lastBuildDate>
+    <link>http://localhost:4000website/</link>
+    <atom:link href="http://localhost:4000website/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Fri, 05 Jan 2018 17:37:29 +0100</pubDate>
+    <lastBuildDate>Fri, 05 Jan 2018 17:37:29 +0100</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
@@ -26,8 +26,8 @@
 
 </description>
         <pubDate>Thu, 28 Dec 2017 15:31:49 +0100</pubDate>
-        <link>http://localhost:4000/community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html</link>
-        <guid isPermaLink="true">http://localhost:4000/community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html</guid>
+        <link>http://localhost:4000website/community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html</link>
+        <guid isPermaLink="true">http://localhost:4000website/community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html</guid>
         
         
         <category>community</category>
@@ -61,8 +61,8 @@
 
 </description>
         <pubDate>Thu, 02 Nov 2017 19:31:49 +0100</pubDate>
-        <link>http://localhost:4000/architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html</link>
-        <guid isPermaLink="true">http://localhost:4000/architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html</guid>
+        <link>http://localhost:4000website/architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html</link>
+        <guid isPermaLink="true">http://localhost:4000website/architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html</guid>
         
         
         <category>architecture</category>
@@ -141,8 +141,8 @@ At the moment, these are the points we had covered. These are just points relate
 
 </description>
         <pubDate>Mon, 16 Oct 2017 20:31:49 +0200</pubDate>
-        <link>http://localhost:4000/ci/2017/10/16/fft-ci-learnings.html</link>
-        <guid isPermaLink="true">http://localhost:4000/ci/2017/10/16/fft-ci-learnings.html</guid>
+        <link>http://localhost:4000website/ci/2017/10/16/fft-ci-learnings.html</link>
+        <guid isPermaLink="true">http://localhost:4000website/ci/2017/10/16/fft-ci-learnings.html</guid>
         
         
         <category>ci</category>
@@ -169,8 +169,8 @@ At the moment, these are the points we had covered. These are just points relate
 
 </description>
         <pubDate>Fri, 01 Sep 2017 20:31:49 +0200</pubDate>
-        <link>http://localhost:4000/architecture/microservices/2017/09/01/splitting-the-monolith-worth-it.html</link>
-        <guid isPermaLink="true">http://localhost:4000/architecture/microservices/2017/09/01/splitting-the-monolith-worth-it.html</guid>
+        <link>http://localhost:4000website/architecture/microservices/2017/09/01/splitting-the-monolith-worth-it.html</link>
+        <guid isPermaLink="true">http://localhost:4000website/architecture/microservices/2017/09/01/splitting-the-monolith-worth-it.html</guid>
         
         
         <category>architecture</category>
