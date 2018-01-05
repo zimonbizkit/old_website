@@ -23,7 +23,7 @@ After that I assumed that I was screwed and that I was going to last days to kno
 
 {% highlight bash %}
 
-{% end highlight %}
+{% endhighlight %}
 
 So eventually seemed that my ruby version on my box was old enough to fail when trying to serve a static website. Since ruby was included by default in the box, and many services were dependant on ruby, I could not take the risk of just erasing ruby and installing the new version. I though to have a virtual environment to work in my blog, and I also discovered later that [this is a plausible soliution][vagrantjekyllbox] as in Vagrant Hub there's a virtual machine for that.
 
