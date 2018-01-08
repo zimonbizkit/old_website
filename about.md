@@ -8,7 +8,7 @@ permalink: /about/
 <p class='about para'>
  I'm a software developer based in Barcelona ,Spain. I've been working as a developer/systems engineer for a big variety of companies, and I'm currently employed as a developer on one of the biggest fintech companies in the United Kingdom, with business units in a bunch of countries.
 <br>
- My period of scholarship should be the equivalent of the so called <i>bachelors degree</i> on Information Technology, which I didn't finish, but intend to do some day. Anyhow, you can contact <a href='mailto:simon.gallegos.edu@gmail.com'>me</a> if you want a copy of my resumé.
+ My period of scholarship should be the equivalent of the so called <i>bachelors degree</i> on Information Technology, which I didn't finish, but intend to do some day. Anyhow, you can contact <a href='mailto:simon.gallegos.edu@gmail.com'>me</a> if you want a copy of my CV.
 </p>
 
 ##  What I do 
@@ -24,7 +24,7 @@ I've been working with web stacks mostly onmy career, but I have also hands-on e
 
 ##  What I plan to do
 <p class='about para'>
-Since most of my past career has been develop around the web, my interests are shifting towards  distributed systems, and everything that involves a software ecosystem to be more heterogeneous. I strive to work like that in a mid/long term future.
+Since most of my past career has been developed around the web, my interests are shifting towards  distributed systems, and everything that involves a software ecosystem to be more heterogeneous. I strive to work like that in a mid/long term future.
 </p>
 
 # My tech interests
@@ -36,7 +36,7 @@ Some of the concepts I'm currently learning from and applying at my current job 
 <li> CQRS</li>
 <li> Event Sourcing</li>
 </ul>
-I have a tremendous chance to apply these principles/methods where I work, as I work with knowledgeable colleagues. That's a big part of why I'm keeping my actual job :)
+I have a tremendous chance to apply these principles/methods where I work, as I work in a good environment and with knowledgeable people. That's a big part of why I'm keeping my actual job :)
 
 I'm also interested in everything that's related to:
 <ul>
