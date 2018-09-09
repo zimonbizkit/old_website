@@ -27,9 +27,11 @@
   <meta name="description" content="Eduard Simón | simon.gallegos.edu@gmail.com
 ">
 
-  <link rel="stylesheet" href="//css/main.css">
-  <link rel="canonical" href="http://localhost:4000//">
-  <link rel="alternate" type="application/rss+xml" title="Edu Simon" href="http://localhost:4000//feed.xml">
+  <link rel="stylesheet" href="/blogyay/css/main.css">
+  <link rel="stylesheet" href="/blogyay/css/mermaid.css">
+  <link rel="canonical" href="http://localhost:4000/blogyay/">
+  <link rel="alternate" type="application/rss+xml" title="Edu Simon" href="http://localhost:4000/blogyay/feed.xml">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/7.1.2/mermaid.min.js"></script>
 </head>
 
 
@@ -40,7 +42,7 @@
   <div class="wrapper">
 
     <div class="title">
-        <a class="site-title" href="//">
+        <a class="site-title" href="/blogyay/">
           <div style='height:80px'>
               <img src='assets/logo.png' style='height:80px'>
           </div>
@@ -60,11 +62,15 @@
       <div class="trigger">
         
           
-          <a class="page-link" href="//about/">About</a>
+          <a class="page-link" href="/blogyay/about/">About</a>
           
         
           
-          <a class="page-link" href="//contact/">Contact</a>
+          <a class="page-link" href="/blogyay/books/">Books I read</a>
+          
+        
+          
+          <a class="page-link" href="/blogyay/contact/">Contact</a>
           
         
           
@@ -88,7 +94,7 @@
   
  <div class="col col-12">
       <div class="col col-3">
-          <div class="block glass"  style="background-image:url(assets/avatar.jpg)">      
+          <div class="block glass"  style="background: url(assets/avatar.jpg) no-repeat;background-size: 154%;background-repeat: space; background-position-x: 86%;">      
           </div>
       </div>
       <div class="col col-9">
@@ -103,7 +109,7 @@
   <div class="col col-12">
     
       <div class="col col-7">
-        <div class="block block-about" style="background-image:url(assets/about.jpg)">
+        <div class="block block-about" style="background-image:url(assets/about.jpg)" id="aboutme">
             <div class="block-body height-3">              
                 <h2 class="align-bottom-right">
                   About me
@@ -112,21 +118,11 @@
         </div>
       </div>
     
-      <div class="col col-4">
-        <div class="block " style="background-image:url(assets/2.jpg)">
+      <div class="col col-5">
+        <div class="block " style="background-image:url(assets/books.jpg)" id="books">
             <div class="block-body height-2">              
                 <h2 class="align-bottom-right">
-                  Some other project I did
-                </h2>
-            </div>
-        </div>
-      </div>
-    
-      <div class="col col-">
-        <div class="block " style="background-image:url(assets/)">
-            <div class="block-body height-">              
-                <h2 class="align-bottom-right">
-                  
+                  Books I read
                 </h2>
             </div>
         </div>
@@ -135,13 +131,25 @@
     </div>
   <div class="col col-9">
     
-      <div class="col col-2">
+      <div class="col col-5">
+        <div class="block blue">
+            <div class="block-body height-1">
+                <span class="post-meta white-text">Sep 1, 2018</span>
+
+                <h2>
+                  <a class="post-link white-text" href="/blogyay/ddd/interview/techincal-tests/2018/09/01/tackling-the-technical-test.html">Tackling the technical test as a domain problem</a>
+                </h2>
+            </div>
+        </div>
+      </div>
+    
+      <div class="col col-7">
         <div class="block green">
             <div class="block-body height-1">
                 <span class="post-meta white-text">Dec 28, 2017</span>
 
                 <h2>
-                  <a class="post-link white-text" href="//community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html">More learnings from the community at the CCC in Leipzig - Tor relays</a>
+                  <a class="post-link white-text" href="/blogyay/community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html">More learnings at the CCC in Leipzig - Tor relays</a>
                 </h2>
             </div>
         </div>
@@ -153,31 +161,19 @@
                 <span class="post-meta white-text">Nov 2, 2017</span>
 
                 <h2>
-                  <a class="post-link white-text" href="//architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html">Dealing with ruby's various versions</a>
+                  <a class="post-link white-text" href="/blogyay/architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html">Dealing with ruby's various versions</a>
                 </h2>
             </div>
         </div>
       </div>
     
-      <div class="col col-6">
+      <div class="col col-8">
         <div class="block teal">
             <div class="block-body height-1">
                 <span class="post-meta white-text">Oct 16, 2017</span>
 
                 <h2>
-                  <a class="post-link white-text" href="//ci/2017/10/16/fft-ci-learnings.html">Food for thought: continuous integration learnings (I)</a>
-                </h2>
-            </div>
-        </div>
-      </div>
-    
-      <div class="col col-6">
-        <div class="block orange">
-            <div class="block-body height-1">
-                <span class="post-meta white-text">Sep 1, 2017</span>
-
-                <h2>
-                  <a class="post-link white-text" href="//architecture/microservices/2017/09/01/splitting-the-monolith-worth-it.html">Is splitting the monolith eventually worth it?</a>
+                  <a class="post-link white-text" href="/blogyay/ci/2017/10/16/fft-ci-learnings.html">Food for thought: test suite efficiency in continous integration environments</a>
                 </h2>
             </div>
         </div>

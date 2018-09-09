@@ -24,7 +24,7 @@ I've been working with web stacks mostly onmy career, but I have also hands-on e
 
 ##  What I plan to do
 <p class='about para'>
-Since most of my past career has been developed around the web, my interests are shifting towards  distributed systems, and everything that involves a software ecosystem to be more heterogeneous. I strive to work like that in a mid/long term future.
+Since most of my past career has been developed around the web, my interests are shifting towards  distributed systems, and everything that involves a software ecosystem to be more heterogeneous. I strive to work like that in a mid/long term future. In a long term I would like to work as a contractor, either remotely or abroad.
 </p>
 
 # My tech interests
@@ -63,8 +63,8 @@ I'll try to adhere to this, and convert it in my own CoC when it comes to writin
 <p class='about para'>
 I do other things that do not involve computers. Amongst any other common interests, I enjoy 
 <ul>
-  <li> Music, drumming: Not in a band anymore because of time, but I've been in a few :)</li> 
+  <li> Music, drumming: I'm a drummer in a municipal jazz band near Barcelona. Sometimes I also do small gigs with cover bands as a drummer too.</li> 
   <li> Light mountain hiking/hideouts</li>
-  <li> Travels</li>
+  <li> Travelling</li>
 </ul>
 </p>

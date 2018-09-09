@@ -23,12 +23,14 @@
 	<meta name="msapplication-TileImage" content="assets/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 
-  <title>Food for thought: continuous integration learnings (I)</title>
-  <meta name="description" content="This will be the beginning of a series of posts to explain some theorical findings on software development, and as a reminder for themI’m going to treat firs...">
+  <title>Food for thought: test suite efficiency in continous integration environments</title>
+  <meta name="description" content="When I came to the company which I’m working now, they explained to me their software testing strategy , and I was just amazed. There are a few reasons for t...">
 
-  <link rel="stylesheet" href="//css/main.css">
-  <link rel="canonical" href="http://localhost:4000//ci/2017/10/16/fft-ci-learnings.html">
-  <link rel="alternate" type="application/rss+xml" title="Edu Simon" href="http://localhost:4000//feed.xml">
+  <link rel="stylesheet" href="/blogyay/css/main.css">
+  <link rel="stylesheet" href="/blogyay/css/mermaid.css">
+  <link rel="canonical" href="http://localhost:4000/blogyay/ci/2017/10/16/fft-ci-learnings.html">
+  <link rel="alternate" type="application/rss+xml" title="Edu Simon" href="http://localhost:4000/blogyay/feed.xml">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/7.1.2/mermaid.min.js"></script>
 </head>
 
 
@@ -39,7 +41,7 @@
   <div class="wrapper">
 
     <div class="title">
-        <a class="site-title" href="//">
+        <a class="site-title" href="/blogyay/">
           <div style='height:80px'>
               <img src='assets/logo.png' style='height:80px'>
           </div>
@@ -59,11 +61,15 @@
       <div class="trigger">
         
           
-          <a class="page-link" href="//about/">About</a>
+          <a class="page-link" href="/blogyay/about/">About</a>
           
         
           
-          <a class="page-link" href="//contact/">Contact</a>
+          <a class="page-link" href="/blogyay/books/">Books I read</a>
+          
+        
+          
+          <a class="page-link" href="/blogyay/contact/">Contact</a>
           
         
           
@@ -85,18 +91,12 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">Food for thought: continuous integration learnings (I)</h1>
+    <h1 class="post-title" itemprop="name headline">Food for thought: test suite efficiency in continous integration environments</h1>
     <p class="post-meta"><time datetime="2017-10-16T20:31:49+02:00" itemprop="datePublished">Oct 16, 2017</time></p>
   </header>
 
   <div class="post-content" itemprop="articleBody">
-    <p>This will be the beginning of a series of posts to explain some theorical findings on software development, and as a reminder for them
-I’m going to treat first a term which I knew, but I haven’t seen applied up to now: continuous integration.
-<br /></p>
-<hr />
-
-<p><br />
-When I came to the company which I’m working now, they explained to me their software testing strategy , and I was just amazed. There are a few reasons for that, but the most important, was that they had an idea of how and when to apply unit tests, and also they were using a way to do end-to-end testing and integration testing, with a tool called Behat , and Selenium. Compared to what I had in my previous job, where there was no strategy and even no testing at all, that seemed the utmost and final solution. They just did the work that, in my previous job, was conducted by some other colleague <strong>manually</strong>, and that took a considerable amount of time, effort, and temper. 
+    <p>When I came to the company which I’m working now, they explained to me their software testing strategy , and I was just amazed. There are a few reasons for that, but the most important, was that they had an idea of how and when to apply unit tests, and also they were using a way to do end-to-end testing and integration testing, with a tool called Behat , and Selenium. Compared to what I had in my previous job, where there was no strategy and even no testing at all, that seemed the utmost and final solution. They just did the work that, in my previous job, was conducted by some other colleague <strong>manually</strong>, and that took a considerable amount of time, effort, and temper. 
 <br />
 <br />
 Here, the automatic tests suite were run each time a feature was merged in a common branch (used for integration). That meant that <em>all</em> the tests, were executed before the merge into production, which to me seemed pretty cool in first place. Nevertheless, I sensed some discussion from other colleagues regarding this, but I didn’t pay attention to it, as the way that integration was conducted was simply the best I knew.
@@ -152,14 +152,12 @@ The new approach for testing, that should improve a significant amount of our in
 	<li>Discuss whether if it's necessary to execute all the test suite <i>for each</i> feature or fix done to our software.</li>
 </ul>
 
-<p>Part of discovering what was wrong in the test strategy is important to set the pace of CI. This landmarks need to be done on a daily basis, as the ‘win’ for this cannot be achieved overnight. Changing this is a very long term effort. 
-<br />
-At the moment, these are the points we had covered. These are just points related to <i>testing software</i> that will bring us closer to our main purpose, which is to approach to Continous Integration. Other topics will come and be addressed, which are unrelated to testing. That will be covered in the next post of this series.</p>
+<p>Part of discovering what was wrong in the test strategy is important to set the pace of CI. This landmarks need to be done on a daily basis, as the ‘win’ for this cannot be achieved overnight. Changing this is a very long term effort.</p>
 
 
   </div>
 
-</article>0
+</article>
 
       </div>
     </div>

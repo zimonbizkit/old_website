@@ -23,12 +23,14 @@
 	<meta name="msapplication-TileImage" content="assets/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 
-  <title>More learnings from the community at the CCC in Leipzig - Tor relays</title>
+  <title>More learnings at the CCC in Leipzig - Tor relays</title>
   <meta name="description" content="It’s not my first time here,but since I’m a newcomer to what’s known as having a blog, I’m going to share some thoughts on my stay at the Chaos Communication...">
 
-  <link rel="stylesheet" href="//css/main.css">
-  <link rel="canonical" href="http://localhost:4000//community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html">
-  <link rel="alternate" type="application/rss+xml" title="Edu Simon" href="http://localhost:4000//feed.xml">
+  <link rel="stylesheet" href="/blogyay/css/main.css">
+  <link rel="stylesheet" href="/blogyay/css/mermaid.css">
+  <link rel="canonical" href="http://localhost:4000/blogyay/community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html">
+  <link rel="alternate" type="application/rss+xml" title="Edu Simon" href="http://localhost:4000/blogyay/feed.xml">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/7.1.2/mermaid.min.js"></script>
 </head>
 
 
@@ -39,7 +41,7 @@
   <div class="wrapper">
 
     <div class="title">
-        <a class="site-title" href="//">
+        <a class="site-title" href="/blogyay/">
           <div style='height:80px'>
               <img src='assets/logo.png' style='height:80px'>
           </div>
@@ -59,11 +61,15 @@
       <div class="trigger">
         
           
-          <a class="page-link" href="//about/">About</a>
+          <a class="page-link" href="/blogyay/about/">About</a>
           
         
           
-          <a class="page-link" href="//contact/">Contact</a>
+          <a class="page-link" href="/blogyay/books/">Books I read</a>
+          
+        
+          
+          <a class="page-link" href="/blogyay/contact/">Contact</a>
           
         
           
@@ -85,7 +91,7 @@
         <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">More learnings from the community at the CCC in Leipzig - Tor relays</h1>
+    <h1 class="post-title" itemprop="name headline">More learnings at the CCC in Leipzig - Tor relays</h1>
     <p class="post-meta"><time datetime="2017-12-28T15:31:49+01:00" itemprop="datePublished">Dec 28, 2017</time></p>
   </header>
 
@@ -94,18 +100,24 @@
 
 <p>As of writing, the experience of being here is being positive and uplifting. It’s a mixture of workgroups, conferences and assemblies related on ongoing topics such as internet anonimity, censorship, digital arts, activism,human rights, as may others. The people tha I’m meeting here makes me have an image of an inclusive community where any idea or opinion is being respected: this is a tremendous opportunty to see different opinions about the same topic. In short a huge chance to meet people that devote themselves to technology in a different way other than professionaly, and as my second year in this venue, I begin to see this as a source of inspiration.</p>
 
+<h2 id="tor-and-its-output-relays">TOR and its output relays</h2>
 <p>I’m also neither an expert nor a rookie on alternative Internet protocols/routers, but as the Internet as we know it is becoming less distributed and easier to control by authorities, I thought it could be intereresting to assist to a round table there, about maintaining an outer TOR relay, and its consequences for both the community and the “maintainer” of that relay.</p>
-
-<p>So, in first place, and to keep it short, Tor (which is an acronym of “The Onion Router”) is a  -describe tor with a few words here-.</p>
 
 <p>However, since the usage of Tor anonimyzes the information, it removes control of that from big corporations. These, don’t seem to like this, and push the authorities to remove and even punish the usage of it.</p>
 
-<p>Of course, as Tor is just a way of re-anonimyzing the web, there will be a set of people that will use it as a way to do fraudulent actions, and authorities see a chance there to demonize all the usage of this network. It’s quite saddening that there’s a conscious law enforcement keeping focus on the usage of these networks and its proper shutdown. As far as the internet was conceived, all the information should be accessed and accessible the same way , without prioritizing it depending on markets, political implications and lobbies of any kind. I understood from that workgroup that the community is aware of that and that a proper approach to authorities regarding the usage of Tor could help understand that the access to the information is free and equally.</p>
+<p>Of course, as Tor is just a way of re-anonimyzing the web, there will be a set of people that will use it as a way to do fraudulent actions, and authorities see a chance there to demonize all the usage of this network. It’s quite saddening that there’s a conscious law enforcement keeping focus on the usage of these networks and its proper shutdown. As far as the internet was conceived, all the information should be accessed and accessible the same way , without prioritizing it depending on markets, political implications and lobbies of any kind. I understood from that workgroup that the community is aware of that and that a proper approach to authorities regarding the usage of Tor could help understand that the access to the information is free and equal. 
+<br /><br /></p>
+
+<h2 id="edward-snowden-and-the-punishment-of-the-people-that-helped-hiding-him">Edward Snowden, and the punishment of the people that helped hiding him</h2>
+<p>Another topic that I enjoyed the most was a talk where they told how Edward snowden was helped by a group of refugees at its escape from the U.S. to Asia, to hide from the authorities from both the american country and the Hong Kong authorities. This was already told in the CCC congress last year, but the current topic was how those refugees were being extracted from their original privileges as refugees, and how surreptitiously they had their basic incomes and their rights taken from. The whole talk is available <a href="https://media.ccc.de/v/34c3-9297-the_snowden_refugees_under_surveillance_in_hong_kong">here</a>.</p>
+
+<h2 id="critical-infrastructure-managed-by-insecure-systems-protocols-and-applications">Critical infrastructure managed by insecure systems, protocols and applications</h2>
+<p>As infrastructures and electronical systems can be automated, sometimes a programmed appliaction can serve as an interface to manage bigger problems, such as water decks, electrical power plants, subway systems. Most of them were deemed as very modern, fast, saving lots of efforts in human workforce. But they were also understood as primary and sometimes insecure. A talk held by Thomas Roth was a list of practical use cases of systems, PLCs and applications that were very vulnerable to intrusion and attacks and also a showcase of many examples on how to circumvent the security of the devices responible to control large systems.<a href="https://media.ccc.de/v/34c3-8956-scada_-_gateway_to_s_hell">Here’s</a> the video for the talk.</p>
 
 
   </div>
 
-</article>0
+</article>
 
       </div>
     </div>

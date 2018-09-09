@@ -4,30 +4,237 @@
     <title>Edu Simon</title>
     <description>Eduard Simón | simon.gallegos.edu@gmail.com
 </description>
-    <link>http://localhost:4000//</link>
-    <atom:link href="http://localhost:4000//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 05 Jan 2018 17:42:53 +0100</pubDate>
-    <lastBuildDate>Fri, 05 Jan 2018 17:42:53 +0100</lastBuildDate>
+    <link>http://localhost:4000/blogyay/</link>
+    <atom:link href="http://localhost:4000/blogyay/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 09 Sep 2018 20:09:02 +0200</pubDate>
+    <lastBuildDate>Sun, 09 Sep 2018 20:09:02 +0200</lastBuildDate>
     <generator>Jekyll v3.6.2</generator>
     
       <item>
-        <title>More learnings from the community at the CCC in Leipzig - Tor relays</title>
+        <title>Tackling the technical test as a domain problem</title>
+        <description>&lt;script&gt;mermaid.initialize({startOnLoad:true,theme:'forest'});&lt;/script&gt;
+
+&lt;p&gt;Very recently I found myself searching for other employers as I ended up bored working for my employer. I was able to find a job that suited me after only two interview processes as Barcelona is becoming a huge place for IT industry. This was the first time I was doing interviews that implied fulfilling technical tests so I got invaluable experience on how companies check these tests and what does that mean to me as a potential employee. Here’s my experience.&lt;/p&gt;
+
+&lt;p&gt;I did two technical tests on two different companies. Both were searching for a specific role, and allowed to have as much time as needed to fulfill the test. Since I wanted any of these jobs, I tried to do my best on both tests, and given my recent experience on Domain Driven Design I decided to go further and tackle these tests using the principles that i was applying at my current job, using as an example a test that I did for a company that needed a video streamer.
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;converting-the-problem-space-into-solution-space&quot;&gt;Converting the ‘Problem Space’ into ‘Solution Space’&lt;/h2&gt;
+
+&lt;p&gt;In most of the cases, the employer provides a problem to solve with a bit of context. Sometimes this context is very well defined and is focused on solving a very specific problem. This is the case for the test that the employer gave me , which demanded an application that imported information from two (or more) different sources onto their own systems. This premise, as well defined as it was, was my interpretation of the &lt;strong&gt;Problem Space&lt;/strong&gt;. The latter is no more than the description of the problem/scenario that we are going to solve in business terms. This space should have business terms,key ideas amd processes that we should translate into implementation, but yet reflect the nature of the problem that we are trying to solve. In our case, we extracted from the Problem space the need of importing information from two video sources to an internal store via a process:&lt;/p&gt;
+
+&lt;div class=&quot;mermaid domainproblem&quot;&gt;
+graph LR;
+A[Flub] --&amp;gt;|Json| C(Process);
+V[Glorf] --&amp;gt;|Yaml| C(Process);
+C --&amp;gt;|Data transformed| D[Internal store];
+&lt;/div&gt;
+
+&lt;p&gt;This was the case where the Problem Space was specified properly, but sometimes employers like to give only a few clues about the problem. This is because some &lt;strong&gt;employers want you to work develop their Problem Space&lt;/strong&gt;. This is with the sole purpose to help the business to know if you are good exploring their domain, as well as to know if you can work on a problem without being a business expert. This wasn’t the case, though.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;implementing-solution-space-with-terms-from-the-domain&quot;&gt;Implementing ‘Solution space’ with terms from the domain&lt;/h2&gt;
+&lt;p&gt;Now that we figured out the problem, it was time to work on the implementation. Big part of what’s the &lt;strong&gt;Solution Space&lt;/strong&gt; is the approach given to solve a problem, which in case of our technical test was just the implementation. My idea of approaching the problem was simple, and my goals on the test were:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Using Domain Driven Design principles&lt;/li&gt;
+  &lt;li&gt;Separate the domain actors and its behaviour from the tools used for the test&lt;/li&gt;
+  &lt;li&gt;Provide an understandable suite of tests to help document the implementation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Eventually I came up with a design like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../../../../../../assets/posts/ddd-approach.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;My approach would separate the actual &lt;strong&gt;Domain&lt;/strong&gt; to import the file (for example, checking the extension of the video file) from the implementation of both the import process into the entity (Video) and the persistence mechanism of choice to store the video. These details are in the &lt;strong&gt;Infrastructure&lt;/strong&gt; layer. The triggerer for all this process, will be in the request received in the &lt;strong&gt;&lt;em&gt;Application&lt;/em&gt;&lt;/strong&gt; Layer.&lt;/p&gt;
+
+&lt;p&gt;The video should create itself as an Entity of the domain, in a domain service. But in case that there’s dependencies on third party modules to import the service, we should use a &lt;strong&gt;domain service implemented in infrastructure&lt;/strong&gt;. This is done using an Infrastructure service whose contract relies on Domain:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Domain/Service/ProcessVideo/ProcessVideoInterface.php&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;?php&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Domain\Service\ProcessVideo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PhpAmqpLib\Message\AMQPMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ProcessVideoInterface&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;AMQPMessage&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;And the implementation goes below (some of the details are trivial, though).&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Infrastructure/Service/ProcessVideo/ProcessVideoService.php&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Infrastructure\Service\ProcessVideo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Domain\Aggregate\Video&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Domain\Repository\VideoRepositoryInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Domain\Service\ProcessVideo\ProcessVideoInterface&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Domain\ValueObject\LabelCollection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Domain\ValueObject\Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Domain\ValueObject\Url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Infrastructure\DataTransformer\MessageDataTransformer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\Core\Infrastructure\Service\BuildVideoAggregate\BuildVideoAggregateService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;AppBundle\SharedKernel\Infrastructure\Service\Output\OutputService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;PhpAmqpLib\Message\AMQPMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;ProcessVideoService&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ProcessVideoInterface&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * @var MessageDataTransformer
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$messageDataTransformer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * @var VideoRepositoryInterface
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$videoRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;sd&quot;&gt;/**
+     * @var BuildVideoAggregateService
+     */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$buildVideoAggregateService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__construct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;MessageDataTransformer&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$messageDataTransformer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;VideoRepositoryInterface&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$videoRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;BuildVideoAggregateService&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$buildVideoAggregateService&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;messageDataTransformer&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$messageDataTransformer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;videoRepository&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$videoRepository&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buildVideoAggregateService&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$buildVideoAggregateService&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;AMQPMessage&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;messageDataTransformer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromAMQPMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBody&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$video&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buildVideoAggregateService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'labels'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'url'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;videoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;One of the most important things that companies would expect us to do when doing these tests, is to &lt;strong&gt;reflect&lt;/strong&gt; the nature of the problem and its solution in the code. So before showing off, the implementation should, from my perspective at that time, to use the same “domain terms” they were using to describe. In the case of the snippet above, we do two things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;interpret the ‘Video’ concept as an aggregate which is comprised with ‘business terms’ with which we can refer to one: labels, name of video and url&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;nv&quot;&gt;$video&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buildVideoAggregateService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'labels'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'url'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;having a single entrypoint of the service , as a public function whose name is meaningful to the overall domain problem, and reflects the nature of the unit of work: the name ‘process’ was chosen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;AMQPMessage&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;messageDataTransformer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromAMQPMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBody&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$video&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buildVideoAggregateService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'labels'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'url'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;videoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;naming-the-intrinsics-of-the-implementation-without-exposing-too-much&quot;&gt;Naming the intrinsics of the implementation without exposing too much&lt;/h3&gt;
+&lt;p&gt;Also, in the example above we strive for simplicity and readability. We can assume just by reading the body of the &lt;em&gt;process&lt;/em&gt; function which are the intrinsics of processing the input:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;transforming the message from an external source into a more abstract type
+    &lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;messageDataTransformer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;fromAMQPMessage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getBody&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;building the ‘Video’ entity with the generic typed message we built earlier
+    &lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$video&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;buildVideoAggregateService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+          &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'labels'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+          &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'name'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+          &lt;span class=&quot;nv&quot;&gt;$message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'url'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;and saving the video to a store (whose implementation is not needed to be known) using a repository pattern.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$this&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;videoRepository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;save&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$video&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;This,also, is a form of adhering to the &lt;a href=&quot;https://www.oodesign.com/single-responsibility-principle.html&quot;&gt;Single Responsibility Principle&lt;/a&gt; (from SOLID) and the &lt;a href=&quot;https://stackoverflow.com/questions/49002/prefer-composition-over-inheritance&quot;&gt;Composition Over Inheritance&lt;/a&gt; postulate.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;back-to-the-intentions-the-feedback-from-the-employer&quot;&gt;Back to the intentions: the feedback from the employer&lt;/h2&gt;
+
+&lt;p&gt;Eventually they deemed my test as good and I got the chance to have an interview with them personally. After some chitty chat where they explained business and the different teams they had, I had a very tiny opportunity to explain my test where I gave a few details, where I explained the reason behind separating implementation from the business (domain). They also liked the fact that the Solution Space was using terms of business, and the representation of the domain in the code. In short, they accepted the technical test as good and they didn’t argue it as either they were ok about my implementation, or they really didn’t valued it much than other aspects.&lt;/p&gt;
+
+&lt;p&gt;After some rigurous HR-ey questions that they asked me, they thanked me for my time and I left. 
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;learnings&quot;&gt;Learnings&lt;/h2&gt;
+&lt;p&gt;Eventually I didn’t get the job. Despite that, I could extract some learnings from this:
+&lt;br /&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Companies like to have their ‘sample’ problems solved by approaches that can be as readable as possible, and won’t argue about your implementation. &lt;strong&gt;Some companies&lt;/strong&gt; value equally or even more the explanation of your approach to a problem, rather than magic and shabby/dark implementations, which you might not be able to explain in non technical terms.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Using the terms of the domain problem, and separating domain problems from their actual implementation is good, as doing this there’s a door open for better implementations. If an opportunity to explain the domain problem appears, using the same terms as their business is likely to be seen as good.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Using this approach made that my technical test for my second employer was worth an offer for joining the company, which I accepted :)&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;
+After this, there’s a succint constructive criticism that I got from there:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Technicality is not all that you’ll need to bring into an interview. Also, good companies search people who is prone to match their team in empathic and assertive terms rather than having PhD’s working with them that are not able to work with more people. This is even as important as technical skills, and the ability to cooperate and relate to colleagues in an empathic key might be key to their business.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The test is &lt;a href=&quot;https://github.com/zimonbizkit/videoimportertestapplication&quot;&gt;here&lt;/a&gt; in my github profile for you to check it out or clone it.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 01 Sep 2018 12:25:49 +0200</pubDate>
+        <link>http://localhost:4000/blogyay/ddd/interview/techincal-tests/2018/09/01/tackling-the-technical-test.html</link>
+        <guid isPermaLink="true">http://localhost:4000/blogyay/ddd/interview/techincal-tests/2018/09/01/tackling-the-technical-test.html</guid>
+        
+        
+        <category>ddd</category>
+        
+        <category>interview</category>
+        
+        <category>techincal-tests</category>
+        
+      </item>
+    
+      <item>
+        <title>More learnings at the CCC in Leipzig - Tor relays</title>
         <description>&lt;p&gt;It’s not my first time here,but since I’m a newcomer to what’s known as having a blog, I’m going to share some thoughts on my stay at the Chaos Communication Congress (CCC) that this year is being held in the city of Leipzig, Germany. As a disclaimer I’ll say that I’m quite the oppositte of a hacktivist/infosec guy, but since it’s the biggest hacker conference held in Europe, and I know some guys of that profile from an old good friend of mine, I thougt that that’s enough excuse to stroll around and go with them. I must say that if you are searching to get some knowledge of a specific technology, most of the things exposed here won’t be like that.&lt;/p&gt;
 
 &lt;p&gt;As of writing, the experience of being here is being positive and uplifting. It’s a mixture of workgroups, conferences and assemblies related on ongoing topics such as internet anonimity, censorship, digital arts, activism,human rights, as may others. The people tha I’m meeting here makes me have an image of an inclusive community where any idea or opinion is being respected: this is a tremendous opportunty to see different opinions about the same topic. In short a huge chance to meet people that devote themselves to technology in a different way other than professionaly, and as my second year in this venue, I begin to see this as a source of inspiration.&lt;/p&gt;
 
+&lt;h2 id=&quot;tor-and-its-output-relays&quot;&gt;TOR and its output relays&lt;/h2&gt;
 &lt;p&gt;I’m also neither an expert nor a rookie on alternative Internet protocols/routers, but as the Internet as we know it is becoming less distributed and easier to control by authorities, I thought it could be intereresting to assist to a round table there, about maintaining an outer TOR relay, and its consequences for both the community and the “maintainer” of that relay.&lt;/p&gt;
-
-&lt;p&gt;So, in first place, and to keep it short, Tor (which is an acronym of “The Onion Router”) is a  -describe tor with a few words here-.&lt;/p&gt;
 
 &lt;p&gt;However, since the usage of Tor anonimyzes the information, it removes control of that from big corporations. These, don’t seem to like this, and push the authorities to remove and even punish the usage of it.&lt;/p&gt;
 
-&lt;p&gt;Of course, as Tor is just a way of re-anonimyzing the web, there will be a set of people that will use it as a way to do fraudulent actions, and authorities see a chance there to demonize all the usage of this network. It’s quite saddening that there’s a conscious law enforcement keeping focus on the usage of these networks and its proper shutdown. As far as the internet was conceived, all the information should be accessed and accessible the same way , without prioritizing it depending on markets, political implications and lobbies of any kind. I understood from that workgroup that the community is aware of that and that a proper approach to authorities regarding the usage of Tor could help understand that the access to the information is free and equally.&lt;/p&gt;
+&lt;p&gt;Of course, as Tor is just a way of re-anonimyzing the web, there will be a set of people that will use it as a way to do fraudulent actions, and authorities see a chance there to demonize all the usage of this network. It’s quite saddening that there’s a conscious law enforcement keeping focus on the usage of these networks and its proper shutdown. As far as the internet was conceived, all the information should be accessed and accessible the same way , without prioritizing it depending on markets, political implications and lobbies of any kind. I understood from that workgroup that the community is aware of that and that a proper approach to authorities regarding the usage of Tor could help understand that the access to the information is free and equal. 
+&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;edward-snowden-and-the-punishment-of-the-people-that-helped-hiding-him&quot;&gt;Edward Snowden, and the punishment of the people that helped hiding him&lt;/h2&gt;
+&lt;p&gt;Another topic that I enjoyed the most was a talk where they told how Edward snowden was helped by a group of refugees at its escape from the U.S. to Asia, to hide from the authorities from both the american country and the Hong Kong authorities. This was already told in the CCC congress last year, but the current topic was how those refugees were being extracted from their original privileges as refugees, and how surreptitiously they had their basic incomes and their rights taken from. The whole talk is available &lt;a href=&quot;https://media.ccc.de/v/34c3-9297-the_snowden_refugees_under_surveillance_in_hong_kong&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;critical-infrastructure-managed-by-insecure-systems-protocols-and-applications&quot;&gt;Critical infrastructure managed by insecure systems, protocols and applications&lt;/h2&gt;
+&lt;p&gt;As infrastructures and electronical systems can be automated, sometimes a programmed appliaction can serve as an interface to manage bigger problems, such as water decks, electrical power plants, subway systems. Most of them were deemed as very modern, fast, saving lots of efforts in human workforce. But they were also understood as primary and sometimes insecure. A talk held by Thomas Roth was a list of practical use cases of systems, PLCs and applications that were very vulnerable to intrusion and attacks and also a showcase of many examples on how to circumvent the security of the devices responible to control large systems.&lt;a href=&quot;https://media.ccc.de/v/34c3-8956-scada_-_gateway_to_s_hell&quot;&gt;Here’s&lt;/a&gt; the video for the talk.&lt;/p&gt;
 
 </description>
         <pubDate>Thu, 28 Dec 2017 15:31:49 +0100</pubDate>
-        <link>http://localhost:4000//community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html</link>
-        <guid isPermaLink="true">http://localhost:4000//community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html</guid>
+        <link>http://localhost:4000/blogyay/community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html</link>
+        <guid isPermaLink="true">http://localhost:4000/blogyay/community/tor/2017/12/28/my-stay-at-chaos-communication-congress-leipzig.html</guid>
         
         
         <category>community</category>
@@ -47,22 +254,37 @@
 	from /home/edu/.rvm/rubies/ruby-1.9.3-p374/lib/ruby/site_ruby/1.9.1/rubygems/core_ext/kernel_require.rb:55:in `require'&lt;/span&gt;
 	from /usr/bin/jekyll:20:in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&amp;lt;main&amp;gt;&lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;After that I assumed that I was screwed and that I was going to last days to know what’s been broken on my system. Before giving up I did a quick research of the output of that command, and seemed pretty common. I installed jekyll from the aptitude package manager, and as it’s also a gem on ruby, out of my desperation I tried to install ruby via its package manager:gem. So after executing &lt;code class=&quot;highlighter-rouge&quot;&gt;gem install jekyll&lt;/code&gt;, the output was the following:&lt;/p&gt;
+&lt;p&gt;After that I assumed that I was screwed and that I was going to last days to know what’s been broken on my system. Before giving up I did a quick research of the output of that command, and seemed pretty common. I installed jekyll from the aptitude package manager, and as it’s also a gem on ruby, out of my desperation I tried to install ruby via its package manager:gem, unsuccessfully.&lt;/p&gt;
 
-&lt;p&gt;So eventually seemed that my ruby version on my box was old enough to fail when trying to serve a static website. Since ruby was included by default in the box, and many services were dependant on ruby, I could not take the risk of just erasing ruby and installing the new version. I though to have a virtual environment to work in my blog, and I also discovered later that [this is a plausible soliution][vagrantjekyllbox] as in Vagrant Hub there’s a virtual machine for that.&lt;/p&gt;
+&lt;p&gt;So eventually seemed that my ruby version on my box was old enough to fail when trying to serve a static website. Since ruby was included by default in the box, and many services were dependant on ruby, I could not take the risk of just erasing ruby and installing the new version. I though to have a virtual environment to work in my blog, and I also discovered later that this is a plausible soliution as in Vagrant Hub there’s a virtual machine for that.&lt;/p&gt;
 
-&lt;p&gt;But before thinking that, I searched for a way that the fellow ruby developers could manage their environment easily, as for sur ther could have dealt with a problem similar as mine. And there, I found [RVM][rubyversionmanager]. That, is just the acronym of “Ruby Version Manager”, and it just does that very well. After following the steps they indicate on their website, I was able to see what was my ruby environment status (even when I tried to mess with ruby manually):&lt;/p&gt;
+&lt;p&gt;But before thinking that, I searched for a way that the fellow ruby developers could manage their environment easily, as for sur ther could have dealt with a problem similar as mine. And there, I found &lt;a href=&quot;https://rvm.io/&quot;&gt;RVM&lt;/a&gt;. That, is just the acronym of “Ruby Version Manager”, and it just does that very well. After following the steps they indicate on their website, I was able to see what was my ruby environment status (even when I tried to mess with ruby manually), &lt;code class=&quot;highlighter-rouge&quot;&gt;rvm list&lt;/code&gt; command.&lt;/p&gt;
 
-&lt;p&gt;After executing &lt;code class=&quot;highlighter-rouge&quot;&gt;rvm list known&lt;/code&gt; I was able to see which ruby version I needed to install. Again, installing a ruby version was really easy by executing &lt;code class=&quot;highlighter-rouge&quot;&gt;rvm install &amp;lt;ruby_version&amp;gt;&lt;/code&gt;. After that, by executing &lt;code class=&quot;highlighter-rouge&quot;&gt;ruby list&lt;/code&gt; a list of available and used versions was displayed. To switch the version of ruby to the one I needed was as simple as &lt;code class=&quot;highlighter-rouge&quot;&gt;rvm use &amp;lt;ruby_version&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; ruby-1.9.3-p374 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; x86_64 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+   ruby-2.2.0 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; x86_64 &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# =&amp;gt; - current&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# =* - current &amp;amp;&amp;amp; default&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#  * - default&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;After executing &lt;code class=&quot;highlighter-rouge&quot;&gt;rvm list known&lt;/code&gt; I was able to see which ruby version I needed to install. Again, installing a ruby version was really easy by executing &lt;code class=&quot;highlighter-rouge&quot;&gt;rvm install &amp;lt;ruby_version&amp;gt;&lt;/code&gt;. After that, by executing &lt;code class=&quot;highlighter-rouge&quot;&gt;rvm list&lt;/code&gt; a list of available and used versions was displayed. To switch the version of ruby to the one I needed was as simple as &lt;code class=&quot;highlighter-rouge&quot;&gt;rvm use &amp;lt;ruby_version&amp;gt;&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Of course, after that, &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt; was executed properly and I was able to check out the site that you are browsing now.&lt;/p&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt; ~/Projects/website : master &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; jekyll serve
+Configuration file: /home/edu/Projects/website/_config.yml
+            Source: /home/edu/Projects/website
+       Destination: /home/edu/Projects/website/_site
+ Incremental build: disabled. Enable with &lt;span class=&quot;nt&quot;&gt;--incremental&lt;/span&gt;
+      Generating... 
+                    &lt;span class=&quot;k&quot;&gt;done in &lt;/span&gt;1.096 seconds.
+ Auto-regeneration: enabled &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/home/edu/Projects/website'&lt;/span&gt;
+    Server address: http://127.0.0.1:4000/blogyay/&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Thu, 02 Nov 2017 19:31:49 +0100</pubDate>
-        <link>http://localhost:4000//architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html</link>
-        <guid isPermaLink="true">http://localhost:4000//architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html</guid>
+        <link>http://localhost:4000/blogyay/architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html</link>
+        <guid isPermaLink="true">http://localhost:4000/blogyay/architecture/microservices/2017/11/02/dealing-with-various-envs-ruby.html</guid>
         
         
         <category>architecture</category>
@@ -72,14 +294,8 @@
       </item>
     
       <item>
-        <title>Food for thought: continuous integration learnings (I)</title>
-        <description>&lt;p&gt;This will be the beginning of a series of posts to explain some theorical findings on software development, and as a reminder for them
-I’m going to treat first a term which I knew, but I haven’t seen applied up to now: continuous integration.
-&lt;br /&gt;&lt;/p&gt;
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;br /&gt;
-When I came to the company which I’m working now, they explained to me their software testing strategy , and I was just amazed. There are a few reasons for that, but the most important, was that they had an idea of how and when to apply unit tests, and also they were using a way to do end-to-end testing and integration testing, with a tool called Behat , and Selenium. Compared to what I had in my previous job, where there was no strategy and even no testing at all, that seemed the utmost and final solution. They just did the work that, in my previous job, was conducted by some other colleague &lt;strong&gt;manually&lt;/strong&gt;, and that took a considerable amount of time, effort, and temper. 
+        <title>Food for thought: test suite efficiency in continous integration environments</title>
+        <description>&lt;p&gt;When I came to the company which I’m working now, they explained to me their software testing strategy , and I was just amazed. There are a few reasons for that, but the most important, was that they had an idea of how and when to apply unit tests, and also they were using a way to do end-to-end testing and integration testing, with a tool called Behat , and Selenium. Compared to what I had in my previous job, where there was no strategy and even no testing at all, that seemed the utmost and final solution. They just did the work that, in my previous job, was conducted by some other colleague &lt;strong&gt;manually&lt;/strong&gt;, and that took a considerable amount of time, effort, and temper. 
 &lt;br /&gt;
 &lt;br /&gt;
 Here, the automatic tests suite were run each time a feature was merged in a common branch (used for integration). That meant that &lt;em&gt;all&lt;/em&gt; the tests, were executed before the merge into production, which to me seemed pretty cool in first place. Nevertheless, I sensed some discussion from other colleagues regarding this, but I didn’t pay attention to it, as the way that integration was conducted was simply the best I knew.
@@ -135,47 +351,15 @@ The new approach for testing, that should improve a significant amount of our in
 	&lt;li&gt;Discuss whether if it's necessary to execute all the test suite &lt;i&gt;for each&lt;/i&gt; feature or fix done to our software.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Part of discovering what was wrong in the test strategy is important to set the pace of CI. This landmarks need to be done on a daily basis, as the ‘win’ for this cannot be achieved overnight. Changing this is a very long term effort. 
-&lt;br /&gt;
-At the moment, these are the points we had covered. These are just points related to &lt;i&gt;testing software&lt;/i&gt; that will bring us closer to our main purpose, which is to approach to Continous Integration. Other topics will come and be addressed, which are unrelated to testing. That will be covered in the next post of this series.&lt;/p&gt;
+&lt;p&gt;Part of discovering what was wrong in the test strategy is important to set the pace of CI. This landmarks need to be done on a daily basis, as the ‘win’ for this cannot be achieved overnight. Changing this is a very long term effort.&lt;/p&gt;
 
 </description>
         <pubDate>Mon, 16 Oct 2017 20:31:49 +0200</pubDate>
-        <link>http://localhost:4000//ci/2017/10/16/fft-ci-learnings.html</link>
-        <guid isPermaLink="true">http://localhost:4000//ci/2017/10/16/fft-ci-learnings.html</guid>
+        <link>http://localhost:4000/blogyay/ci/2017/10/16/fft-ci-learnings.html</link>
+        <guid isPermaLink="true">http://localhost:4000/blogyay/ci/2017/10/16/fft-ci-learnings.html</guid>
         
         
         <category>ci</category>
-        
-      </item>
-    
-      <item>
-        <title>Is splitting the monolith eventually worth it?</title>
-        <description>&lt;p&gt;In any valuable  software team&lt;/p&gt;
-
-&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
-
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
-
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'Tom'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints 'Hi, Tom' to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 01 Sep 2017 20:31:49 +0200</pubDate>
-        <link>http://localhost:4000//architecture/microservices/2017/09/01/splitting-the-monolith-worth-it.html</link>
-        <guid isPermaLink="true">http://localhost:4000//architecture/microservices/2017/09/01/splitting-the-monolith-worth-it.html</guid>
-        
-        
-        <category>architecture</category>
-        
-        <category>microservices</category>
         
       </item>
     

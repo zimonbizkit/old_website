@@ -103,10 +103,11 @@ blockquote {
  */
 pre,
 code {
-  font-size: 15px;
+  font-size: 12px;
   border: 1px solid #464646;
   border-radius: 3px;
-  background-color: #2c2c2c; }
+  line-height: 14px;
+  background-color: transparent; }
 
 code {
   padding: 1px 5px; }
@@ -157,6 +158,9 @@ pre {
 
 .tp-image {
   margin: 5% 30%; }
+
+.domainproblem {
+  margin: 5% 17%; }
 
 #books {
   background-size: cover; }
@@ -597,7 +601,7 @@ pre {
 .highlight {
   background: #2c2c2c; }
   .highlighter-rouge .highlight {
-    background: #eef; }
+    background: transparent; }
   .highlight .c {
     color: #998;
     font-style: italic; }

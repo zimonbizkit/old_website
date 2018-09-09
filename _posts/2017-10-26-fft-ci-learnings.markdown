@@ -1,18 +1,13 @@
 ---
 layout: post
-title:  "Food for thought: continuous integration learnings (I)"
+title:  "Food for thought: test suite efficiency in continous integration environments"
 color:  teal
-width:   6 
+width:  8 
 height:  1
 date:   2017-10-16 20:31:49 +0200
 categories: ci
 ---
 
-This will be the beginning of a series of posts to explain some theorical findings on software development, and as a reminder for them
-I'm going to treat first a term which I knew, but I haven't seen applied up to now: continuous integration.
-<br>
-<hr>
-<br>
 When I came to the company which I'm working now, they explained to me their software testing strategy , and I was just amazed. There are a few reasons for that, but the most important, was that they had an idea of how and when to apply unit tests, and also they were using a way to do end-to-end testing and integration testing, with a tool called Behat , and Selenium. Compared to what I had in my previous job, where there was no strategy and even no testing at all, that seemed the utmost and final solution. They just did the work that, in my previous job, was conducted by some other colleague **manually**, and that took a considerable amount of time, effort, and temper. 
 <br>
 <br>
@@ -72,8 +67,6 @@ The new approach for testing, that should improve a significant amount of our in
 </ul>
 
 Part of discovering what was wrong in the test strategy is important to set the pace of CI. This landmarks need to be done on a daily basis, as the 'win' for this cannot be achieved overnight. Changing this is a very long term effort. 
-<br>
-At the moment, these are the points we had covered. These are just points related to <i>testing software</i> that will bring us closer to our main purpose, which is to approach to Continous Integration. Other topics will come and be addressed, which are unrelated to testing. That will be covered in the next post of this series. 
 
 [mf-blog]: https://martinfowler.com/aboutMe.html
 [testpyr]:   https://martinfowler.com/bliki/TestPyramid.html
