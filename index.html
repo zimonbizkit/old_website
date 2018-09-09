@@ -22,6 +22,7 @@ layout: default
   <div class="col col-12">
     {% for port in site.data.portfolio %}
       <div class="col col-{{port.width}}">
+        <a href='{{port.linkref}}'>
         <div class="block {{port.class}}" style="background-image:url(assets/{{port.img}})" id="{{port.htmlid}}">
             <div class="block-body height-{{port.height}}">              
                 <h2 class="align-bottom-right">
@@ -29,6 +30,7 @@ layout: default
                 </h2>
             </div>
         </div>
+      </a>
       </div>
     {% endfor %}
     </div>

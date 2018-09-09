@@ -5,6 +5,7 @@
     width: 7
     height: 3
     htmlid: aboutme
+    linkref: about/
 
 -   id: 2
     title: Books I read 
@@ -12,3 +13,4 @@
     width: 5
     height: 2
     htmlid: books
+    linkref: books/
