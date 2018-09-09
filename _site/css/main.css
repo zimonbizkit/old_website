@@ -181,7 +181,11 @@ pre {
     transition-duration: 0.5s; }
 
 .block-about {
-  background-position: 580px 240px; }
+  background-position: 580px 240px;
+  transition: transform .2s; }
+
+.block-about:hover, .block-books:hover {
+  transform: scale(1.1); }
 
 /**
  * Site header

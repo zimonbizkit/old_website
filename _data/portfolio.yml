@@ -8,7 +8,8 @@
     linkref: about/
 
 -   id: 2
-    title: Books I read 
+    title: Books I read
+    class: block-books 
     img: books.jpg
     width: 5
     height: 2
