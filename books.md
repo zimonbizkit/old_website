@@ -12,16 +12,16 @@ _Frederick P. Brooks, JR._
 This is a book from some decades ago about software development and organizing engineering and architect teams. But despite being so old, it contains some postulates that are still valid to this day. It's worth a read for someone who wants to understand how teams can behave badly in terms of consecution of tasks, efficiency, featuritis, and so on.
 <br>
 <br>
-**Introducing Erlang**
-_Simon St. Laurent_
-Just to begin to shift to functional programming.
+**Introducing Erlang**<br>
+_Simon St. Laurent_<br>
+Just to begin to shift to functional programming.<br>
 <br>
 <br>
 <br>
 ## 2017
 **Implementing Domain Driven Design**
 <br>
- _Eric Evans_
+ _Vaughn Vernon_
  <br> 	 
  Dubbed 'The Red Book'. This should be the bible for any DDD practitioner. I was able to arrange a reading club with my team to go over all the book and try to apply the principles that appear in the book. That helped to shape the basic way I'm approaching programming problems now.
 <br>
